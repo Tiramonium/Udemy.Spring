@@ -2,7 +2,6 @@ package com.udemy.spring.resources;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.udemy.spring.domain.Categoria;
 import com.udemy.spring.services.CategoriaService;
