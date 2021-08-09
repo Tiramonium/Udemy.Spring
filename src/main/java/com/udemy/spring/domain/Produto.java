@@ -8,26 +8,34 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class Categoria implements Serializable {
+public class Produto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer Id;
     public String Nome;
+    public Double Preco;
 
-    @ManyToMany(mappedBy = "Categorias")
-    public List<Produto> Produtos = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+        name = "PRODUTO_CATEGORIA",
+        joinColumns = @JoinColumn(name = "ID_PRODUTO"),
+        inverseJoinColumns = @JoinColumn(name = "ID_CATEGORIA"))
+    public List<Categoria> Categorias = new ArrayList<>();
 
-    public Categoria() {
+    public Produto() {
     }
 
-    public Categoria(Integer id, String nome) {
+    public Produto(Integer id, String nome, Double preco) {
         this.Id = id;
         this.Nome = nome;
+        this.Preco = preco;
     }
 
     @Override
@@ -48,7 +56,7 @@ public class Categoria implements Serializable {
             return false;
         }
 
-        Categoria other = (Categoria) obj;
+        Produto other = (Produto) obj;
 
         if (this.Id == null && other.Id != null) {
             return false;
