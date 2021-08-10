@@ -30,6 +30,9 @@ public class Pedido implements Serializable {
     @JoinColumn(name = "ID_ENDERECO")
     public Endereco EnderecoEntrega;
 
+    @OneToMany(mappedBy = "Id.Pedido")
+    public List<ItemPedido> Itens = new ArrayList<>();
+
     @OneToMany(mappedBy = "Pedido")
     public List<Pagamento> Pagamentos = new ArrayList<>();
 

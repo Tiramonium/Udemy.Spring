@@ -8,6 +8,7 @@ import com.udemy.spring.domain.Cidade;
 import com.udemy.spring.domain.Cliente;
 import com.udemy.spring.domain.Endereco;
 import com.udemy.spring.domain.Estado;
+import com.udemy.spring.domain.ItemPedido;
 import com.udemy.spring.domain.Pagamento;
 import com.udemy.spring.domain.PagamentoBoleto;
 import com.udemy.spring.domain.PagamentoCartao;
@@ -21,6 +22,7 @@ import com.udemy.spring.repositories.CidadeRepository;
 import com.udemy.spring.repositories.ClienteRepository;
 import com.udemy.spring.repositories.EnderecoRepository;
 import com.udemy.spring.repositories.EstadoRepository;
+import com.udemy.spring.repositories.ItemPedidoRepository;
 import com.udemy.spring.repositories.PagamentoRepository;
 import com.udemy.spring.repositories.PedidoRepository;
 import com.udemy.spring.repositories.ProdutoRepository;
@@ -35,28 +37,22 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Application implements CommandLineRunner {
     @Autowired
     private CategoriaRepository categoriaRepository;
-
     @Autowired
     private CidadeRepository cidadeRepository;
-
     @Autowired
     private ClienteRepository clienteRepository;
-
     @Autowired
     private EnderecoRepository enderecoRepository;
-
     @Autowired
     private EstadoRepository estadoRepository;
-
+    @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
     @Autowired
     private PagamentoRepository pagamentoRepository;
-
     @Autowired
     private PedidoRepository pedidoRepository;
-
     @Autowired
     private ProdutoRepository produtoRepository;
-
     @Autowired
     private TelefoneRepository telefoneRepository;
 
@@ -120,7 +116,8 @@ public class Application implements CommandLineRunner {
         Pagamento pagto1 = new PagamentoCartao(null, EstadoPagamento.QUITADO, ped1, sdf.parse("30/09/2017 10:33"), 6);
         ped1.Pagamentos.add(pagto1);
 
-        Pagamento pagto2 = new PagamentoBoleto(null, EstadoPagamento.PENDENTE, ped2, null, sdf.parse("20/10/2017 00:00"));
+        Pagamento pagto2 = new PagamentoBoleto(null, EstadoPagamento.PENDENTE, ped2, null,
+                sdf.parse("20/10/2017 00:00"));
         ped2.Pagamentos.add(pagto2);
 
         cli1.Pedidos.addAll(Arrays.asList(ped1, ped2));
@@ -128,5 +125,20 @@ public class Application implements CommandLineRunner {
         pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
         pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
         clienteRepository.save(cli1);
+
+        ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+        ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+        ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+
+        ped1.Itens.addAll(Arrays.asList(ip1, ip2));
+        ped2.Itens.add(ip3);
+
+        p1.Itens.add(ip1);
+        p2.Itens.add(ip3);
+        p3.Itens.add(ip2);
+
+        itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
+        pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+        produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
     }
 }
