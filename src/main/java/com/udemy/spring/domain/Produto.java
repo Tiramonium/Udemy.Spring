@@ -26,10 +26,7 @@ public class Produto implements Serializable {
 
     @JsonBackReference
     @ManyToMany
-    @JoinTable(
-        name = "PRODUTO_CATEGORIA",
-        joinColumns = @JoinColumn(name = "ID_PRODUTO"),
-        inverseJoinColumns = @JoinColumn(name = "ID_CATEGORIA"))
+    @JoinTable(name = "PRODUTO_CATEGORIA", joinColumns = @JoinColumn(name = "ID_PRODUTO"), inverseJoinColumns = @JoinColumn(name = "ID_CATEGORIA"))
     public List<Categoria> Categorias = new ArrayList<>();
 
     public Produto() {
