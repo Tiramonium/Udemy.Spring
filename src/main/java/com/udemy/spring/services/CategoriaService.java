@@ -1,5 +1,6 @@
 package com.udemy.spring.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.udemy.spring.domain.Categoria;
@@ -13,6 +14,11 @@ import org.springframework.stereotype.Service;
 public class CategoriaService {
     @Autowired
     private CategoriaRepository repository;
+
+    public List<Categoria> Listar() {
+        List<Categoria> categorias = repository.findAll();
+        return categorias;
+    }
 
     public Categoria Buscar(Integer id) {
         Optional<Categoria> categoria = repository.findById(id);

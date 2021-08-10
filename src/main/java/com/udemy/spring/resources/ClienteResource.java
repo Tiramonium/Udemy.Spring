@@ -2,8 +2,8 @@ package com.udemy.spring.resources;
 
 import java.util.List;
 
-import com.udemy.spring.domain.Categoria;
-import com.udemy.spring.services.CategoriaService;
+import com.udemy.spring.domain.Cliente;
+import com.udemy.spring.services.ClienteService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/categorias")
-public class CategoriaResource {
+@RequestMapping(value = "/clientes")
+public class ClienteResource {
     @Autowired
-    private CategoriaService service;
+    private ClienteService service;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Categoria> Listar() {
-        List<Categoria> categorias = service.Listar();
-        return categorias;
+    public List<Cliente> Listar() {
+        List<Cliente> clientes = service.Listar();
+        return clientes;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> Buscar(@PathVariable Integer id) {
-        Categoria categoria = service.Buscar(id);
-        return ResponseEntity.ok().body(categoria);
+        Cliente cliente = service.Buscar(id);
+        return ResponseEntity.ok().body(cliente);
     }
 }

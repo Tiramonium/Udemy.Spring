@@ -5,6 +5,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Telefone {
     @Id
@@ -12,6 +14,7 @@ public class Telefone {
 
     @ManyToOne
     @JoinColumn(name = "ID_CLIENTE")
+    @JsonBackReference
     public Cliente Cliente;
 
     public Telefone() {
