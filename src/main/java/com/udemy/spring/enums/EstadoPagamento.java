@@ -1,12 +1,12 @@
 package com.udemy.spring.enums;
 
-public enum TipoCliente {
-    PESSOAFISICA(1, "Pessoa Física"), PESSOAJURIDICA(2, "Pessoa Jurídica");
+public enum EstadoPagamento {
+    PENDENTE(1, "Pendente"), QUITADO(2, "Quitado"), CANCELADO(3, "Cancelado");
 
     private Integer Codigo;
     private String Descricao;
 
-    private TipoCliente(Integer codigo, String descricao) {
+    private EstadoPagamento(Integer codigo, String descricao) {
         this.Codigo = codigo;
         this.Descricao = descricao;
     }
@@ -19,14 +19,14 @@ public enum TipoCliente {
         return this.Descricao;
     }
 
-    public static TipoCliente toEnum(Integer codigo) {
+    public static EstadoPagamento toEnum(Integer codigo) {
         if (codigo == null) {
             return null;
         }
 
-        for (TipoCliente tc : TipoCliente.values()) {
-            if (codigo.equals(tc.getCodigo())) {
-                return tc;
+        for (EstadoPagamento ep : EstadoPagamento.values()) {
+            if (codigo.equals(ep.getCodigo())) {
+                return ep;
             }
         }
 

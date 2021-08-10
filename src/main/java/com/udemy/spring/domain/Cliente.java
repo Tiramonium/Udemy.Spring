@@ -37,6 +37,10 @@ public class Cliente implements Serializable {
     @OneToMany(mappedBy = "Cliente")
     public List<Telefone> Telefones = new ArrayList<>();
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "Cliente")
+    public List<Pedido> Pedidos = new ArrayList<>();
+
     public Cliente() {
     }
 
@@ -45,15 +49,15 @@ public class Cliente implements Serializable {
         this.Nome = nome;
         this.Email = email;
         this.CpfOuCnpj = cpfoucnpj;
-        this.Tipo = tipo.GetCodigo();
+        this.Tipo = tipo.getCodigo();
     }
 
     public TipoCliente getTipo() {
         return TipoCliente.toEnum(this.Tipo);
     }
 
-    public void setTipo(Integer tipo) {
-        this.Tipo = tipo;
+    public void setTipo(TipoCliente tipo) {
+        this.Tipo = tipo.getCodigo();
     }
 
     @Override
