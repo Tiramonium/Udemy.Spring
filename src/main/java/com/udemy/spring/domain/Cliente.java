@@ -10,8 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.udemy.spring.enums.TipoCliente;
 
 @Entity
@@ -26,7 +25,6 @@ public class Cliente implements Serializable {
     public String CpfOuCnpj;
     private Integer Tipo;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "Cliente")
     public List<Endereco> Enderecos = new ArrayList<>();
 
@@ -34,11 +32,10 @@ public class Cliente implements Serializable {
     // @CollectionTable(name = "TELEFONE")
     // public Set<String> Telefones = new HashSet<>();
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "Cliente")
     public List<Telefone> Telefones = new ArrayList<>();
 
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "Cliente")
     public List<Pedido> Pedidos = new ArrayList<>();
 

@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Pedido implements Serializable {
@@ -29,7 +28,6 @@ public class Pedido implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "ID_CLIENTE")
-    @JsonManagedReference
     public Cliente Cliente;
 
     @ManyToOne
@@ -40,7 +38,6 @@ public class Pedido implements Serializable {
     public List<ItemPedido> Itens = new ArrayList<>();
 
     @OneToMany(mappedBy = "Pedido")
-    @JsonManagedReference
     public List<Pagamento> Pagamentos = new ArrayList<>();
 
     public Pedido() {
