@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.udemy.spring.enums.TipoCliente;
 
@@ -37,7 +38,7 @@ public class Cliente implements Serializable {
     @OneToMany(mappedBy = "Cliente")
     public List<Telefone> Telefones = new ArrayList<>();
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(mappedBy = "Cliente")
     public List<Pedido> Pedidos = new ArrayList<>();
 

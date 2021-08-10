@@ -2,14 +2,17 @@ package com.udemy.spring.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class ItemPedido implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
+    @EmbeddedId
+    @JsonIgnore
     public ItemPedidoPK Id = new ItemPedidoPK();
 
     public Double Desconto;
@@ -27,6 +30,7 @@ public class ItemPedido implements Serializable {
         this.Preco = preco;
     }
 
+    @JsonIgnore
     public Pedido getPedido() {
         return this.Id.Pedido;
     }

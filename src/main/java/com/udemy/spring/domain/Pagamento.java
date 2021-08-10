@@ -12,6 +12,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.udemy.spring.enums.EstadoPagamento;
 
 @Entity
@@ -23,10 +25,13 @@ public abstract class Pagamento implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer Id;
     private Integer Estado;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     public Date DataPagamento;
 
     @ManyToOne
     @JoinColumn(name = "ID_PEDIDO")
+    @JsonBackReference
     public Pedido Pedido;
 
     public Pagamento() {
