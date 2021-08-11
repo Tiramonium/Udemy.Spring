@@ -7,6 +7,8 @@ import com.udemy.spring.domain.Categoria;
 import com.udemy.spring.services.CategoriaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +46,12 @@ public class CategoriaResource {
     public ResponseEntity<Void> Atualizar(@PathVariable Integer id, @RequestBody Categoria categoria) {
         categoria.Id = id;
         categoria = service.Atualizar(categoria);
+        return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> Apagar(@PathVariable Integer id) {
+        service.Apagar(id);
         return ResponseEntity.noContent().build();
     }
 }
