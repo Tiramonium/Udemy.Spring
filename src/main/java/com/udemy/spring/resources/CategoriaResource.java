@@ -2,13 +2,13 @@ package com.udemy.spring.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.udemy.spring.domain.Categoria;
+import com.udemy.spring.dto.CategoriaDTO;
 import com.udemy.spring.services.CategoriaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,9 +24,10 @@ public class CategoriaResource {
     private CategoriaService service;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Categoria> Listar() {
+    public List<CategoriaDTO> Listar() {
         List<Categoria> categorias = service.Listar();
-        return categorias;
+        List<CategoriaDTO> categoriaDTOs = categorias.stream().map(categoria -> new CategoriaDTO(categoria)).collect(Collectors.toList());
+        return categoriaDTOs;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
