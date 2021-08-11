@@ -1,5 +1,6 @@
 package com.udemy.spring.resources;
 
+import java.net.URI;
 import java.util.List;
 
 import com.udemy.spring.domain.Categoria;
@@ -8,9 +9,11 @@ import com.udemy.spring.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/categorias")
@@ -28,5 +31,12 @@ public class CategoriaResource {
     public ResponseEntity<?> Buscar(@PathVariable Integer id) {
         Categoria categoria = service.Buscar(id);
         return ResponseEntity.ok().body(categoria);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Void> Cadastrar(@RequestBody Categoria categoria) {
+        categoria = service.Cadastrar(categoria);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoria.Id).toUri();
+        return ResponseEntity.created(uri).body(null);
     }
 }

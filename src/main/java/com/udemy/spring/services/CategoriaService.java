@@ -25,4 +25,9 @@ public class CategoriaService {
         return categoria.orElseThrow(() -> new ObjectNotFoundException(
                 String.format("Objeto não encontrado! Id: %d, Tipo: %s", id, Categoria.class.getName())));
     }
+
+    public Categoria Cadastrar(Categoria categoria) {
+        categoria.Id = null;
+        return repository.save(categoria);
+    }
 }
