@@ -13,37 +13,37 @@ public class ItemPedido implements Serializable {
 
     @EmbeddedId
     @JsonIgnore
-    public ItemPedidoPK Id = new ItemPedidoPK();
+    public ItemPedidoPK id = new ItemPedidoPK();
 
-    public Double Desconto;
-    public Integer Quantidade;
-    public Double Preco;
+    public Double desconto;
+    public Integer quantidade;
+    public Double preco;
 
     public ItemPedido() {
     }
 
     public ItemPedido(Pedido pedido, Produto produto, Double desconto, Integer quantidade, Double preco) {
-        this.Id.Pedido = pedido;
-        this.Id.Produto = produto;
-        this.Desconto = desconto;
-        this.Quantidade = quantidade;
-        this.Preco = preco;
+        this.id.pedido = pedido;
+        this.id.produto = produto;
+        this.desconto = desconto;
+        this.quantidade = quantidade;
+        this.preco = preco;
     }
 
     @JsonIgnore
     public Pedido getPedido() {
-        return this.Id.Pedido;
+        return this.id.pedido;
     }
 
     public Produto getProduto() {
-        return this.Id.Produto;
+        return this.id.produto;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (this.Id == null ? 0 : this.Id.hashCode());
+        result = prime * result + (this.id == null ? 0 : this.id.hashCode());
         return result;
     }
 
@@ -59,9 +59,9 @@ public class ItemPedido implements Serializable {
 
         ItemPedido other = (ItemPedido) obj;
 
-        if (this.Id == null && other.Id != null) {
+        if (this.id == null && other.id != null) {
             return false;
-        } else if (!this.Id.equals(other.Id)) {
+        } else if (!this.id.equals(other.id)) {
             return false;
         }
 

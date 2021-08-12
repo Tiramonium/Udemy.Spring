@@ -19,50 +19,50 @@ public class Cliente implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer Id;
-    public String Nome;
-    public String Email;
-    public String CpfOuCnpj;
-    private Integer Tipo;
+    public Integer id;
+    public String nome;
+    public String email;
+    public String cpfOuCnpj;
+    private Integer tipo;
 
-    @OneToMany(mappedBy = "Cliente")
-    public List<Endereco> Enderecos = new ArrayList<>();
+    @OneToMany(mappedBy = "cliente")
+    public List<Endereco> enderecos = new ArrayList<>();
 
     // @ElementCollection
     // @CollectionTable(name = "TELEFONE")
     // public Set<String> Telefones = new HashSet<>();
 
-    @OneToMany(mappedBy = "Cliente")
-    public List<Telefone> Telefones = new ArrayList<>();
+    @OneToMany(mappedBy = "cliente")
+    public List<Telefone> telefones = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "Cliente")
-    public List<Pedido> Pedidos = new ArrayList<>();
+    @OneToMany(mappedBy = "cliente")
+    public List<Pedido> pedidos = new ArrayList<>();
 
     public Cliente() {
     }
 
-    public Cliente(Integer id, String nome, String email, String cpfoucnpj, TipoCliente tipo) {
-        this.Id = id;
-        this.Nome = nome;
-        this.Email = email;
-        this.CpfOuCnpj = cpfoucnpj;
-        this.Tipo = tipo.getCodigo();
+    public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.cpfOuCnpj = cpfOuCnpj;
+        this.tipo = tipo.getCodigo();
     }
 
     public TipoCliente getTipo() {
-        return TipoCliente.toEnum(this.Tipo);
+        return TipoCliente.toEnum(this.tipo);
     }
 
     public void setTipo(TipoCliente tipo) {
-        this.Tipo = tipo.getCodigo();
+        this.tipo = tipo.getCodigo();
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (this.Id == null ? 0 : this.Id.hashCode());
+        result = prime * result + (this.id == null ? 0 : this.id.hashCode());
         return result;
     }
 
@@ -78,9 +78,9 @@ public class Cliente implements Serializable {
 
         Cliente other = (Cliente) obj;
 
-        if (this.Id == null && other.Id != null) {
+        if (this.id == null && other.id != null) {
             return false;
-        } else if (!this.Id.equals(other.Id)) {
+        } else if (!this.id.equals(other.id)) {
             return false;
         }
 

@@ -6,10 +6,13 @@ import java.util.Optional;
 import com.udemy.spring.domain.Categoria;
 import com.udemy.spring.exceptions.DataIntegrityException;
 import com.udemy.spring.exceptions.ObjectNotFoundException;
+import com.udemy.spring.helpers.PaginaHelper;
 import com.udemy.spring.repositories.CategoriaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,6 +25,11 @@ public class CategoriaService {
         return categorias;
     }
 
+    public Page<Categoria> Paginar(Integer pagina, Integer linhasPorPagina, String colunaOrdenacao, String tipoOrdenacao) {
+        PageRequest pageRequest = new PaginaHelper(pagina, linhasPorPagina, colunaOrdenacao, tipoOrdenacao).Paginar();
+        return repository.findAll(pageRequest);
+    }
+
     public Categoria Buscar(Integer id) {
         Optional<Categoria> categoria = repository.findById(id);
         return categoria.orElseThrow(() -> new ObjectNotFoundException(
@@ -29,12 +37,12 @@ public class CategoriaService {
     }
 
     public Categoria Cadastrar(Categoria categoria) {
-        categoria.Id = null;
+        categoria.id = null;
         return repository.save(categoria);
     }
 
     public Categoria Atualizar(Categoria categoria) {
-        Buscar(categoria.Id);
+        Buscar(categoria.id);
         return repository.save(categoria);
     }
 

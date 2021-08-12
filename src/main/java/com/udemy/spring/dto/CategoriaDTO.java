@@ -7,14 +7,14 @@ import com.udemy.spring.domain.Categoria;
 public class CategoriaDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    public Integer Id;
-    public String Nome;
+    public Integer id;
+    public String nome;
 
     public CategoriaDTO() {
     }
 
     public CategoriaDTO(Categoria categoria) {
-        this.Id = categoria.Id;
-        this.Nome = categoria.Nome;
+        this.id = categoria.id;
+        this.nome = categoria.nome;
     }
 }

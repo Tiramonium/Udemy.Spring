@@ -16,25 +16,25 @@ public class Categoria implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer Id;
-    public String Nome;
+    public Integer id;
+    public String nome;
 
-    @ManyToMany(mappedBy = "Categorias")
-    public List<Produto> Produtos = new ArrayList<>();
+    @ManyToMany(mappedBy = "categorias")
+    public List<Produto> produtos = new ArrayList<>();
 
     public Categoria() {
     }
 
     public Categoria(Integer id, String nome) {
-        this.Id = id;
-        this.Nome = nome;
+        this.id = id;
+        this.nome = nome;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (this.Id == null ? 0 : this.Id.hashCode());
+        result = prime * result + (this.id == null ? 0 : this.id.hashCode());
         return result;
     }
 
@@ -50,9 +50,9 @@ public class Categoria implements Serializable {
 
         Categoria other = (Categoria) obj;
 
-        if (this.Id == null && other.Id != null) {
+        if (this.id == null && other.id != null) {
             return false;
-        } else if (!this.Id.equals(other.Id)) {
+        } else if (!this.id.equals(other.id)) {
             return false;
         }
 

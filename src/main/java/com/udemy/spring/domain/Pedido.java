@@ -21,40 +21,40 @@ public class Pedido implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer Id;
+    public Integer id;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-    public Date DataCadastro;
+    public Date dataCadastro;
 
     @ManyToOne
     @JoinColumn(name = "ID_CLIENTE")
-    public Cliente Cliente;
+    public Cliente cliente;
 
     @ManyToOne
     @JoinColumn(name = "ID_ENDERECO")
-    public Endereco EnderecoEntrega;
+    public Endereco enderecoEntrega;
 
-    @OneToMany(mappedBy = "Id.Pedido")
-    public List<ItemPedido> Itens = new ArrayList<>();
+    @OneToMany(mappedBy = "id.pedido")
+    public List<ItemPedido> itens = new ArrayList<>();
 
-    @OneToMany(mappedBy = "Pedido")
-    public List<Pagamento> Pagamentos = new ArrayList<>();
+    @OneToMany(mappedBy = "pedido")
+    public List<Pagamento> pagamentos = new ArrayList<>();
 
     public Pedido() {
     }
 
     public Pedido(Integer id, Date dataCadastro, Cliente cliente, Endereco endereco) {
-        this.Id = id;
-        this.DataCadastro = dataCadastro;
-        this.Cliente = cliente;
-        this.EnderecoEntrega = endereco;
+        this.id = id;
+        this.dataCadastro = dataCadastro;
+        this.cliente = cliente;
+        this.enderecoEntrega = endereco;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (this.Id == null ? 0 : this.Id.hashCode());
+        result = prime * result + (this.id == null ? 0 : this.id.hashCode());
         return result;
     }
 
@@ -70,9 +70,9 @@ public class Pedido implements Serializable {
 
         Pedido other = (Pedido) obj;
 
-        if (this.Id == null && other.Id != null) {
+        if (this.id == null && other.id != null) {
             return false;
-        } else if (!this.Id.equals(other.Id)) {
+        } else if (!this.id.equals(other.id)) {
             return false;
         }
 

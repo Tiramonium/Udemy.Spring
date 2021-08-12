@@ -5,19 +5,19 @@ import java.io.Serializable;
 public class DefaultException implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    public Long Timestamp;
-    public Integer Status;
-    public String Error;
-    public String Exception;
-    public String Message;
-    public String Path;
+    public Long timestamp;
+    public Integer status;
+    public String error;
+    public String exception;
+    public String message;
+    public String path;
 
     public DefaultException(Long timestamp, Integer status, String error, String exception, String message, String path) {
-        this.Timestamp = timestamp;
-        this.Status = status;
-        this.Error = error;
-        this.Exception = exception;
-        this.Message = message;
-        this.Path = path;
+        this.timestamp = timestamp;
+        this.status = status;
+        this.error = error;
+        this.exception = exception;
+        this.message = message;
+        this.path = path;
     }
 }

@@ -21,33 +21,33 @@ public class Produto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer Id;
-    public String Nome;
-    public Double Preco;
+    public Integer id;
+    public String nome;
+    public Double preco;
 
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "PRODUTO_CATEGORIA", joinColumns = @JoinColumn(name = "ID_PRODUTO"), inverseJoinColumns = @JoinColumn(name = "ID_CATEGORIA"))
-    public List<Categoria> Categorias = new ArrayList<>();
+    public List<Categoria> categorias = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "Id.Produto")
-    public List<ItemPedido> Itens = new ArrayList<>();
+    @OneToMany(mappedBy = "id.produto")
+    public List<ItemPedido> itens = new ArrayList<>();
 
     public Produto() {
     }
 
     public Produto(Integer id, String nome, Double preco) {
-        this.Id = id;
-        this.Nome = nome;
-        this.Preco = preco;
+        this.id = id;
+        this.nome = nome;
+        this.preco = preco;
     }
 
     @JsonIgnore
     public List<Pedido> getPedidos() {
         List<Pedido> lista = new ArrayList<>();
 
-        for (ItemPedido ip : this.Itens) {
+        for (ItemPedido ip : this.itens) {
             lista.add(ip.getPedido());
         }
 
@@ -58,7 +58,7 @@ public class Produto implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (this.Id == null ? 0 : this.Id.hashCode());
+        result = prime * result + (this.id == null ? 0 : this.id.hashCode());
         return result;
     }
 
@@ -74,9 +74,9 @@ public class Produto implements Serializable {
 
         Produto other = (Produto) obj;
 
-        if (this.Id == null && other.Id != null) {
+        if (this.id == null && other.id != null) {
             return false;
-        } else if (!this.Id.equals(other.Id)) {
+        } else if (!this.id.equals(other.id)) {
             return false;
         }
 

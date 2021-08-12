@@ -23,40 +23,40 @@ public abstract class Pagamento implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer Id;
-    private Integer Estado;
+    public Integer id;
+    private Integer estado;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-    public Date DataPagamento;
+    public Date dataPagamento;
 
     @ManyToOne
     @JoinColumn(name = "ID_PEDIDO")
     @JsonIgnore
-    public Pedido Pedido;
+    public Pedido pedido;
 
     public Pagamento() {
     }
 
     public Pagamento(Integer id, EstadoPagamento estado, Pedido pedido, Date dataPagamento) {
-        this.Id = id;
-        this.DataPagamento = dataPagamento;
-        this.Estado = estado.getCodigo();
-        this.Pedido = pedido;
+        this.id = id;
+        this.dataPagamento = dataPagamento;
+        this.estado = estado.getCodigo();
+        this.pedido = pedido;
     }
 
     public EstadoPagamento getEstado() {
-        return EstadoPagamento.toEnum(this.Estado);
+        return EstadoPagamento.toEnum(this.estado);
     }
 
     public void setEstado(EstadoPagamento estado) {
-        this.Estado = estado.getCodigo();
+        this.estado = estado.getCodigo();
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (this.Id == null ? 0 : this.Id.hashCode());
+        result = prime * result + (this.id == null ? 0 : this.id.hashCode());
         return result;
     }
 
@@ -72,9 +72,9 @@ public abstract class Pagamento implements Serializable {
 
         Pagamento other = (Pagamento) obj;
 
-        if (this.Id == null && other.Id != null) {
+        if (this.id == null && other.id != null) {
             return false;
-        } else if (!this.Id.equals(other.Id)) {
+        } else if (!this.id.equals(other.id)) {
             return false;
         }
 

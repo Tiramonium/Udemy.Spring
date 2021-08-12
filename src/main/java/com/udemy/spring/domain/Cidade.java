@@ -15,27 +15,27 @@ public class Cidade implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer Id;
-    public String Nome;
+    public Integer id;
+    public String nome;
 
     @ManyToOne
     @JoinColumn(name = "ID_ESTADO")
-    public Estado Estado;
+    public Estado estado;
 
     public Cidade() {
     }
 
     public Cidade(Integer id, String nome, Estado estado) {
-        this.Id = id;
-        this.Nome = nome;
-        this.Estado = estado;
+        this.id = id;
+        this.nome = nome;
+        this.estado = estado;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (this.Id == null ? 0 : this.Id.hashCode());
+        result = prime * result + (this.id == null ? 0 : this.id.hashCode());
         return result;
     }
 
@@ -51,9 +51,9 @@ public class Cidade implements Serializable {
 
         Cidade other = (Cidade) obj;
 
-        if (this.Id == null && other.Id != null) {
+        if (this.id == null && other.id != null) {
             return false;
-        } else if (!this.Id.equals(other.Id)) {
+        } else if (!this.id.equals(other.id)) {
             return false;
         }
 
