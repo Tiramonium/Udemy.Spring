@@ -2,6 +2,7 @@ package com.udemy.spring.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.udemy.spring.domain.Categoria;
 import com.udemy.spring.exceptions.DataIntegrityException;
@@ -22,12 +23,15 @@ public class CategoriaService {
 
     public List<Categoria> Listar() {
         List<Categoria> categorias = repository.findAll();
+        categorias = categorias.stream().map(categoria -> new Categoria(categoria)).collect(Collectors.toList());
         return categorias;
     }
 
-    public Page<Categoria> Paginar(Integer pagina, Integer linhasPorPagina, String colunaOrdenacao, String tipoOrdenacao) {
+    public Page<Categoria> Paginar(Integer pagina, Integer linhasPorPagina, String colunaOrdenacao,
+            String tipoOrdenacao) {
         PageRequest pageRequest = new PaginaHelper(pagina, linhasPorPagina, colunaOrdenacao, tipoOrdenacao).Paginar();
-        return repository.findAll(pageRequest);
+        Page<Categoria> categorias = repository.findAll(pageRequest).map(categoria -> new Categoria(categoria));
+        return categorias;
     }
 
     public Categoria Buscar(Integer id) {
