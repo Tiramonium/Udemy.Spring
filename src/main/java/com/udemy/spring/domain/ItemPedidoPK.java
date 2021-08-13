@@ -1,6 +1,7 @@
 package com.udemy.spring.domain;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
@@ -41,13 +42,13 @@ public class ItemPedidoPK implements Serializable {
 
         if (this.pedido == null && other.pedido != null) {
             return false;
-        } else if (!this.pedido.equals(other.pedido)) {
+        } else if (!Objects.equals(this.pedido, other.pedido)) {
             return false;
         }
 
         if (this.produto == null && other.produto != null) {
             return false;
-        } else if (!this.produto.equals(other.produto)) {
+        } else if (!Objects.equals(this.produto, other.produto)) {
             return false;
         }
 

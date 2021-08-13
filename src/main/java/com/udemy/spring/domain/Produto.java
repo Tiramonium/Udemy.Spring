@@ -3,6 +3,7 @@ package com.udemy.spring.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,6 +44,12 @@ public class Produto implements Serializable {
         this.preco = preco;
     }
 
+    public Produto(Produto produto) {
+        this.id = produto.id;
+        this.nome = produto.nome;
+        this.preco = produto.preco;
+    }
+
     @JsonIgnore
     public List<Pedido> getPedidos() {
         List<Pedido> lista = new ArrayList<>();
@@ -76,7 +83,7 @@ public class Produto implements Serializable {
 
         if (this.id == null && other.id != null) {
             return false;
-        } else if (!this.id.equals(other.id)) {
+        } else if (!Objects.equals(this.id, other.id)) {
             return false;
         }
 

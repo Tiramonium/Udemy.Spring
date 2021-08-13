@@ -3,6 +3,7 @@ package com.udemy.spring.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -63,7 +64,7 @@ public class Categoria implements Serializable {
 
         if (this.id == null && other.id != null) {
             return false;
-        } else if (!this.id.equals(other.id)) {
+        } else if (!Objects.equals(this.id, other.id)) {
             return false;
         }
 

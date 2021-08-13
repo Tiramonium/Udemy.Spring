@@ -2,6 +2,7 @@ package com.udemy.spring.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -74,7 +75,7 @@ public abstract class Pagamento implements Serializable {
 
         if (this.id == null && other.id != null) {
             return false;
-        } else if (!this.id.equals(other.id)) {
+        } else if (!Objects.equals(this.id, other.id)) {
             return false;
         }
 
