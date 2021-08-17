@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,8 +16,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Pedido implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -28,18 +34,22 @@ public class Pedido implements Serializable {
     public Date dataCadastro;
 
     @ManyToOne
+    @JsonInclude(Include.NON_NULL)
     @JoinColumn(name = "ID_CLIENTE")
     public Cliente cliente;
 
     @ManyToOne
+    @JsonInclude(Include.NON_NULL)
     @JoinColumn(name = "ID_ENDERECO")
     public Endereco enderecoEntrega;
 
-    @OneToMany(mappedBy = "id.pedido")
-    public List<ItemPedido> itens = new ArrayList<>();
+    @JsonInclude(Include.NON_EMPTY)
+    @OneToMany(mappedBy = "id.pedido", fetch = FetchType.LAZY)
+    public List<ItemPedido> itens = new ArrayList<ItemPedido>();
 
-    @OneToMany(mappedBy = "pedido")
-    public List<Pagamento> pagamentos = new ArrayList<>();
+    @JsonInclude(Include.NON_EMPTY)
+    @OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY)
+    public List<Pagamento> pagamentos = new ArrayList<Pagamento>();
 
     public Pedido() {
     }
@@ -49,6 +59,14 @@ public class Pedido implements Serializable {
         this.dataCadastro = dataCadastro;
         this.cliente = cliente;
         this.enderecoEntrega = endereco;
+    }
+
+    public Pedido LazyLoad() {
+        this.cliente = null;
+        this.enderecoEntrega = null;
+        this.itens = new ArrayList<ItemPedido>();
+        this.pagamentos = new ArrayList<Pagamento>();
+        return this;
     }
 
     @Override

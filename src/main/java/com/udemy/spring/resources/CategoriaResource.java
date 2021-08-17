@@ -51,14 +51,14 @@ public class CategoriaResource {
     public ResponseEntity<?> Cadastrar(@Valid @RequestBody Categoria categoria) {
         categoria = service.Cadastrar(categoria);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(categoria.id).toUri();
-        return ResponseEntity.created(uri).body(null);
+        return ResponseEntity.created(uri).body(categoria);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> Atualizar(@PathVariable Integer id, @Valid @RequestBody Categoria categoria) {
         categoria.id = id;
         categoria = service.Atualizar(categoria);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(categoria);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

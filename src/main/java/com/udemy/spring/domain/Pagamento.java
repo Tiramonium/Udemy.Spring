@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,11 +15,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.udemy.spring.enums.EstadoPagamento;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public abstract class Pagamento implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -30,9 +35,9 @@ public abstract class Pagamento implements Serializable {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     public Date dataPagamento;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonInclude(Include.NON_NULL)
     @JoinColumn(name = "ID_PEDIDO")
-    @JsonIgnore
     public Pedido pedido;
 
     public Pagamento() {
@@ -43,6 +48,11 @@ public abstract class Pagamento implements Serializable {
         this.dataPagamento = dataPagamento;
         this.estado = estado.getCodigo();
         this.pedido = pedido;
+    }
+
+    public Pagamento LazyLoad() {
+        this.pedido = null;
+        return this;
     }
 
     public EstadoPagamento getEstado() {

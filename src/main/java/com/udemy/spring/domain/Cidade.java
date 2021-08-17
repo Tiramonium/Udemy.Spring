@@ -10,7 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Cidade implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -20,6 +26,7 @@ public class Cidade implements Serializable {
     public String nome;
 
     @ManyToOne
+    @JsonInclude(Include.NON_NULL)
     @JoinColumn(name = "ID_ESTADO")
     public Estado estado;
 
@@ -30,6 +37,11 @@ public class Cidade implements Serializable {
         this.id = id;
         this.nome = nome;
         this.estado = estado;
+    }
+
+    public Cidade LazyLoad() {
+        this.estado = null;
+        return this;
     }
 
     @Override

@@ -4,15 +4,20 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Endereco implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -26,11 +31,12 @@ public class Endereco implements Serializable {
     public String cep;
 
     @ManyToOne
+    @JsonInclude(Include.NON_NULL)
     @JoinColumn(name = "ID_CIDADE")
     public Cidade cidade;
 
-    @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonInclude(Include.NON_NULL)
     @JoinColumn(name = "ID_CLIENTE")
     public Cliente cliente;
 
@@ -47,6 +53,12 @@ public class Endereco implements Serializable {
         this.cep = cep;
         this.cidade = cidade;
         this.cliente = cliente;
+    }
+
+    public Endereco LazyLoad(){
+        this.cidade = null;
+        this.cliente = null;
+        return this;
     }
 
     @Override

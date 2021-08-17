@@ -6,14 +6,19 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Estado implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -22,9 +27,9 @@ public class Estado implements Serializable {
     public Integer id;
     public String nome;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "estado")
-    public List<Cidade> cidades = new ArrayList<>();
+    @JsonInclude(Include.NON_EMPTY)
+    @OneToMany(mappedBy = "estado", fetch = FetchType.LAZY)
+    public List<Cidade> cidades = new ArrayList<Cidade>();
 
     public Estado() {
     }
@@ -32,6 +37,11 @@ public class Estado implements Serializable {
     public Estado(Integer id, String nome) {
         this.id = id;
         this.nome = nome;
+    }
+
+    public Estado LazyLoad(){
+        this.cidades = new ArrayList<Cidade>();
+        return this;
     }
 
     @Override

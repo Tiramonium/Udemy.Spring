@@ -4,22 +4,27 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "telefone")
 public class Telefone implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     public String telefone;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonInclude(Include.NON_NULL)
     @JoinColumn(name = "ID_CLIENTE")
-    @JsonIgnore
     public Cliente cliente;
 
     public Telefone() {
@@ -28,6 +33,11 @@ public class Telefone implements Serializable {
     public Telefone(String telefone, Cliente cliente) {
         this.telefone = telefone;
         this.cliente = cliente;
+    }
+
+    public Telefone LazyLoad(){
+        this.cliente = null;
+        return this;
     }
 
     @Override

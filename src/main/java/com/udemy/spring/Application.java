@@ -3,6 +3,8 @@ package com.udemy.spring;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
+import javax.transaction.Transactional;
+
 import com.udemy.spring.domain.Categoria;
 import com.udemy.spring.domain.Cidade;
 import com.udemy.spring.domain.Cliente;
@@ -57,10 +59,13 @@ public class Application implements CommandLineRunner {
     private TelefoneRepository telefoneRepository;
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication app = new SpringApplication(Application.class);
+        app.setLazyInitialization(true);
+        app.run(args);
     }
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
         Categoria cat1 = new Categoria(null, "Informática");
         Categoria cat2 = new Categoria(null, "Escritório");

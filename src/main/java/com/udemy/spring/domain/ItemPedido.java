@@ -6,14 +6,18 @@ import java.util.Objects;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ItemPedido implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
-    @JsonIgnore
+    @JsonInclude(Include.NON_NULL)
     public ItemPedidoPK id = new ItemPedidoPK();
 
     public Double desconto;
@@ -31,7 +35,11 @@ public class ItemPedido implements Serializable {
         this.preco = preco;
     }
 
-    @JsonIgnore
+    public ItemPedido LazyLoad() {
+        this.id = null;
+        return this;
+    }
+
     public Pedido getPedido() {
         return this.id.pedido;
     }

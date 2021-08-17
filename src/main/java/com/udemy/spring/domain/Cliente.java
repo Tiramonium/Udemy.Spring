@@ -6,39 +6,57 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.udemy.spring.enums.TipoCliente;
 
+import org.apache.logging.log4j.util.Strings;
+import org.hibernate.validator.constraints.Length;
+
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Cliente implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
+
+    @NotEmpty(message = "Preenchimento obrigatório")
+    @Length(min = 5, max = 120, message = "O tamanho do Cliente deve ser entre {min} e {max} caracteres")
     public String nome;
+
+    @NotEmpty(message = "Preenchimento obrigatório")
+    @Email(message = "E-mail inválido")
     public String email;
     public String cpfOuCnpj;
     private Integer tipo;
 
-    @OneToMany(mappedBy = "cliente")
-    public List<Endereco> enderecos = new ArrayList<>();
+    @JsonInclude(Include.NON_EMPTY)
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    public List<Endereco> enderecos = new ArrayList<Endereco>();
 
     // @ElementCollection
     // @CollectionTable(name = "TELEFONE")
     // public Set<String> Telefones = new HashSet<>();
 
-    @OneToMany(mappedBy = "cliente")
-    public List<Telefone> telefones = new ArrayList<>();
+    @JsonInclude(Include.NON_EMPTY)
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    public List<Telefone> telefones = new ArrayList<Telefone>();
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "cliente")
-    public List<Pedido> pedidos = new ArrayList<>();
+    @JsonInclude(Include.NON_EMPTY)
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    public List<Pedido> pedidos = new ArrayList<Pedido>();
 
     public Cliente() {
     }
@@ -49,6 +67,21 @@ public class Cliente implements Serializable {
         this.email = email;
         this.cpfOuCnpj = cpfOuCnpj;
         this.tipo = tipo.getCodigo();
+    }
+
+    public void Atualizar(Cliente cliente) {
+        this.id = cliente.id != null ? cliente.id : this.id;
+        this.nome = !Strings.isBlank(cliente.nome) ? cliente.nome : this.nome;
+        this.email = !Strings.isBlank(cliente.email) ? cliente.email : this.email;
+        this.enderecos = cliente.enderecos != null && !cliente.enderecos.isEmpty() ? cliente.enderecos : this.enderecos;
+        this.telefones = cliente.telefones != null && !cliente.telefones.isEmpty() ? cliente.telefones : this.telefones;
+    }
+
+    public Cliente LazyLoad() {
+        this.enderecos = new ArrayList<Endereco>();
+        this.pedidos = new ArrayList<Pedido>();
+        this.telefones = new ArrayList<Telefone>();
+        return this;
     }
 
     public TipoCliente getTipo() {

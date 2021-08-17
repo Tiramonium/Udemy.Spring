@@ -6,15 +6,23 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import org.apache.logging.log4j.util.Strings;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Categoria implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -26,8 +34,9 @@ public class Categoria implements Serializable {
     @Length(min = 5, max = 80, message = "O tamanho deve ser entre 5 e 80 caracteres")
     public String nome;
 
-    @ManyToMany(mappedBy = "categorias")
-    public List<Produto> produtos = new ArrayList<>();
+    @JsonInclude(Include.NON_EMPTY)
+    @ManyToMany(mappedBy = "categorias", fetch = FetchType.LAZY)
+    public List<Produto> produtos = new ArrayList<Produto>();
 
     public Categoria() {
     }
@@ -37,9 +46,15 @@ public class Categoria implements Serializable {
         this.nome = nome;
     }
 
-    public Categoria(Categoria categoria) {
-        this.id = categoria.id;
-        this.nome = categoria.nome;
+    public void Atualizar(Categoria categoria) {
+        this.id = categoria.id != null ? categoria.id : this.id;
+        this.nome = !Strings.isBlank(categoria.nome) ? categoria.nome : this.nome;
+        this.produtos = categoria.produtos != null && !categoria.produtos.isEmpty() ? categoria.produtos : this.produtos;
+    }
+
+    public Categoria LazyLoad() {
+        this.produtos = new ArrayList<Produto>();
+        return this;
     }
 
     @Override
