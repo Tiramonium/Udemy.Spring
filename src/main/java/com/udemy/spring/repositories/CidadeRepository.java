@@ -1,6 +1,7 @@
 package com.udemy.spring.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.udemy.spring.domain.Cidade;
 
@@ -13,4 +14,7 @@ import org.springframework.stereotype.Repository;
 public interface CidadeRepository extends JpaRepository<Cidade, Integer> {
     @Query("SELECT cidade FROM Cidade AS cidade JOIN FETCH cidade.estado WHERE cidade.estado.id = :id")
     public List<Cidade> findAllByEstado(@Param("id") Integer id);
+
+    @Query(value = "SELECT TOP 1 C.*, E.* FROM CIDADE AS C INNER JOIN ESTADO AS E ON E.ID = C.ID_ESTADO WHERE C.NOME = ?1", nativeQuery = true)
+    public Optional<Cidade> findByNome(@Param("nome") String nome);
 }

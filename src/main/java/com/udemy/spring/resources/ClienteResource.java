@@ -33,9 +33,9 @@ public class ClienteResource {
 
     @RequestMapping(value = "/paginar", method = RequestMethod.GET)
     public ResponseEntity<Page<Cliente>> Paginar(@RequestParam(value = "pagina", required = false) Integer pagina,
-            @RequestParam(value = "linhasPorPagina", required = false) Integer linhasPorPagina,
-            @RequestParam(value = "colunaOrdenacao", required = false) String colunaOrdenacao,
-            @RequestParam(value = "tipoOrdenacao", required = false) String tipoOrdenacao) {
+        @RequestParam(value = "linhasPorPagina", required = false) Integer linhasPorPagina,
+        @RequestParam(value = "colunaOrdenacao", required = false) String colunaOrdenacao,
+        @RequestParam(value = "tipoOrdenacao", required = false) String tipoOrdenacao) {
 
         Page<Cliente> clientes = service.Paginar(pagina, linhasPorPagina, colunaOrdenacao, tipoOrdenacao);
         return ResponseEntity.ok().body(clientes);
@@ -56,8 +56,7 @@ public class ClienteResource {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> Atualizar(@PathVariable Integer id, @Valid @RequestBody Cliente cliente) {
-        cliente.id = id;
-        cliente = service.Atualizar(cliente);
+        cliente = service.Atualizar(id, cliente);
         return ResponseEntity.ok().body(cliente);
     }
 
