@@ -22,7 +22,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(scope = Categoria.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Categoria implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -38,8 +38,7 @@ public class Categoria implements Serializable {
     @ManyToMany(mappedBy = "categorias", fetch = FetchType.LAZY)
     public List<Produto> produtos = new ArrayList<Produto>();
 
-    public Categoria() {
-    }
+    public Categoria() {}
 
     public Categoria(Integer id, String nome) {
         this.id = id;
@@ -67,19 +66,24 @@ public class Categoria implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
+        {
             return true;
         }
 
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass())
+        {
             return false;
         }
 
         Categoria other = (Categoria) obj;
 
-        if (this.id == null && other.id != null) {
+        if (this.id == null && other.id != null)
+        {
             return false;
-        } else if (!Objects.equals(this.id, other.id)) {
+        }
+        else if (!Objects.equals(this.id, other.id))
+        {
             return false;
         }
 

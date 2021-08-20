@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(scope = Pedido.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Pedido implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -51,8 +51,7 @@ public class Pedido implements Serializable {
     @OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY)
     public List<Pagamento> pagamentos = new ArrayList<Pagamento>();
 
-    public Pedido() {
-    }
+    public Pedido() {}
 
     public Pedido(Integer id, Date dataCadastro, Cliente cliente, Endereco endereco) {
         this.id = id;
@@ -79,19 +78,24 @@ public class Pedido implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
+        {
             return true;
         }
 
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass())
+        {
             return false;
         }
 
         Pedido other = (Pedido) obj;
 
-        if (this.id == null && other.id != null) {
+        if (this.id == null && other.id != null)
+        {
             return false;
-        } else if (!Objects.equals(this.id, other.id)) {
+        }
+        else if (!Objects.equals(this.id, other.id))
+        {
             return false;
         }
 

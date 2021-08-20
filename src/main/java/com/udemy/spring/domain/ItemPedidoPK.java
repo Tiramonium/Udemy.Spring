@@ -30,25 +30,33 @@ public class ItemPedidoPK implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
+        {
             return true;
         }
 
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass())
+        {
             return false;
         }
 
         ItemPedidoPK other = (ItemPedidoPK) obj;
 
-        if (this.pedido == null && other.pedido != null) {
+        if (this.pedido == null && other.pedido != null)
+        {
             return false;
-        } else if (!Objects.equals(this.pedido, other.pedido)) {
+        }
+        else if (!Objects.equals(this.pedido, other.pedido))
+        {
             return false;
         }
 
-        if (this.produto == null && other.produto != null) {
+        if (this.produto == null && other.produto != null)
+        {
             return false;
-        } else if (!Objects.equals(this.produto, other.produto)) {
+        }
+        else if (!Objects.equals(this.produto, other.produto))
+        {
             return false;
         }
 

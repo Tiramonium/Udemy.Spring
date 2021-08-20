@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(scope = ItemPedido.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ItemPedido implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -24,8 +24,7 @@ public class ItemPedido implements Serializable {
     public Integer quantidade;
     public Double preco;
 
-    public ItemPedido() {
-    }
+    public ItemPedido() {}
 
     public ItemPedido(Pedido pedido, Produto produto, Double desconto, Integer quantidade, Double preco) {
         this.id.pedido = pedido;
@@ -58,19 +57,24 @@ public class ItemPedido implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
+        {
             return true;
         }
 
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass())
+        {
             return false;
         }
 
         ItemPedido other = (ItemPedido) obj;
 
-        if (this.id == null && other.id != null) {
+        if (this.id == null && other.id != null)
+        {
             return false;
-        } else if (!Objects.equals(this.id, other.id)) {
+        }
+        else if (!Objects.equals(this.id, other.id))
+        {
             return false;
         }
 

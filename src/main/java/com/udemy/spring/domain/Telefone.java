@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -15,11 +16,12 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "telefone")
+@JsonIdentityInfo(scope = Telefone.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "telefone")
 public class Telefone implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @NotEmpty(message = "Preenchimento obrigatório")
     public String telefone;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,15 +29,14 @@ public class Telefone implements Serializable {
     @JoinColumn(name = "ID_CLIENTE")
     public Cliente cliente;
 
-    public Telefone() {
-    }
+    public Telefone() {}
 
     public Telefone(String telefone, Cliente cliente) {
         this.telefone = telefone;
         this.cliente = cliente;
     }
 
-    public Telefone LazyLoad(){
+    public Telefone LazyLoad() {
         this.cliente = null;
         return this;
     }
@@ -50,19 +51,24 @@ public class Telefone implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
+        {
             return true;
         }
 
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass())
+        {
             return false;
         }
 
         Telefone other = (Telefone) obj;
 
-        if (this.telefone == null && other.telefone != null) {
+        if (this.telefone == null && other.telefone != null)
+        {
             return false;
-        } else if (!Objects.equals(this.telefone, other.telefone)) {
+        }
+        else if (!Objects.equals(this.telefone, other.telefone))
+        {
             return false;
         }
 

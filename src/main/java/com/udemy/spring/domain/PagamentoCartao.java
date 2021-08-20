@@ -10,8 +10,7 @@ import com.udemy.spring.enums.EstadoPagamento;
 public class PagamentoCartao extends Pagamento {
     public Integer quantidadeParcelas;
 
-    public PagamentoCartao() {
-    }
+    public PagamentoCartao() {}
 
     public PagamentoCartao(Integer id, EstadoPagamento estado, Pedido pedido, Date dataPagamento, Integer quantidadeParcelas) {
         super(id, estado, pedido, dataPagamento);

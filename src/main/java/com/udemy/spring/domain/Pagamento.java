@@ -23,7 +23,7 @@ import com.udemy.spring.enums.EstadoPagamento;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(scope = Pagamento.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public abstract class Pagamento implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -40,8 +40,7 @@ public abstract class Pagamento implements Serializable {
     @JoinColumn(name = "ID_PEDIDO")
     public Pedido pedido;
 
-    public Pagamento() {
-    }
+    public Pagamento() {}
 
     public Pagamento(Integer id, EstadoPagamento estado, Pedido pedido, Date dataPagamento) {
         this.id = id;
@@ -73,19 +72,24 @@ public abstract class Pagamento implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
+        {
             return true;
         }
 
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass())
+        {
             return false;
         }
 
         Pagamento other = (Pagamento) obj;
 
-        if (this.id == null && other.id != null) {
+        if (this.id == null && other.id != null)
+        {
             return false;
-        } else if (!Objects.equals(this.id, other.id)) {
+        }
+        else if (!Objects.equals(this.id, other.id))
+        {
             return false;
         }
 

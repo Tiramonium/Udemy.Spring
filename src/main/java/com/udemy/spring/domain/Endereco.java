@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -17,19 +19,29 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(scope = Endereco.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Endereco implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
+
+    @NotEmpty(message = "Preenchimento obrigatório")
     public String logradouro;
+
+    @GeneratedValue(generator = "SN")
     public String numero;
+
     public String complemento;
+
+    @NotEmpty(message = "Preenchimento obrigatório")
     public String bairro;
+
+    @NotEmpty(message = "Preenchimento obrigatório")
     public String cep;
 
+    @Valid
     @ManyToOne
     @JsonInclude(Include.NON_NULL)
     @JoinColumn(name = "ID_CIDADE")
@@ -40,11 +52,9 @@ public class Endereco implements Serializable {
     @JoinColumn(name = "ID_CLIENTE")
     public Cliente cliente;
 
-    public Endereco() {
-    }
+    public Endereco() {}
 
-    public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep,
-            Cidade cidade, Cliente cliente) {
+    public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep, Cidade cidade, Cliente cliente) {
         this.id = id;
         this.logradouro = logradouro;
         this.numero = numero;
@@ -55,7 +65,7 @@ public class Endereco implements Serializable {
         this.cliente = cliente;
     }
 
-    public Endereco LazyLoad(){
+    public Endereco LazyLoad() {
         this.cidade = null;
         this.cliente = null;
         return this;
@@ -71,19 +81,24 @@ public class Endereco implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
+        {
             return true;
         }
 
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass())
+        {
             return false;
         }
 
         Endereco other = (Endereco) obj;
 
-        if (this.id == null && other.id != null) {
+        if (this.id == null && other.id != null)
+        {
             return false;
-        } else if (!Objects.equals(this.id, other.id)) {
+        }
+        else if (!Objects.equals(this.id, other.id))
+        {
             return false;
         }
 

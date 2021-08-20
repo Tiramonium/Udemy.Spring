@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
@@ -24,7 +26,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(scope = Cliente.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Cliente implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -43,23 +45,24 @@ public class Cliente implements Serializable {
     private Integer tipo;
 
     @JsonInclude(Include.NON_EMPTY)
+    @NotEmpty(message = "É obrigatório informar pelo menos um Endereço")
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
-    public List<Endereco> enderecos = new ArrayList<Endereco>();
+    public List<@Valid Endereco> enderecos = new ArrayList<Endereco>();
 
     // @ElementCollection
     // @CollectionTable(name = "TELEFONE")
     // public Set<String> Telefones = new HashSet<>();
 
     @JsonInclude(Include.NON_EMPTY)
+    @NotEmpty(message = "É obrigatório informar pelo menos um Telefone")
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
-    public List<Telefone> telefones = new ArrayList<Telefone>();
+    public List<@Valid Telefone> telefones = new ArrayList<Telefone>();
 
     @JsonInclude(Include.NON_EMPTY)
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
-    public List<Pedido> pedidos = new ArrayList<Pedido>();
+    public List<@Valid Pedido> pedidos = new ArrayList<Pedido>();
 
-    public Cliente() {
-    }
+    public Cliente() {}
 
     public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
         this.id = id;
@@ -69,12 +72,19 @@ public class Cliente implements Serializable {
         this.tipo = tipo == null ? null : tipo.getCodigo();
     }
 
-    public void Atualizar(Cliente cliente) {
+    public Cliente Atualizar(Cliente cliente) {
         this.id = cliente.id != null ? cliente.id : this.id;
         this.nome = !Strings.isBlank(cliente.nome) ? cliente.nome : this.nome;
         this.email = !Strings.isBlank(cliente.email) ? cliente.email : this.email;
-        this.enderecos = cliente.enderecos != null && !cliente.enderecos.isEmpty() ? cliente.enderecos : this.enderecos;
-        this.telefones = cliente.telefones != null && !cliente.telefones.isEmpty() ? cliente.telefones : this.telefones;
+        this.tipo = this.tipo == null && cliente.tipo != null ? cliente.tipo : this.tipo;
+        this.enderecos = cliente.enderecos != null && !cliente.enderecos.isEmpty()
+            ? cliente.enderecos.stream().map(endereco -> new Endereco(endereco.id, endereco.logradouro, endereco.numero, endereco.complemento,
+                endereco.bairro, endereco.cep, endereco.cidade, endereco.cliente)).collect(Collectors.toList())
+            : this.enderecos;
+        this.telefones = cliente.telefones != null && !cliente.telefones.isEmpty()
+            ? cliente.telefones.stream().map(telefone -> new Telefone(telefone.telefone, telefone.cliente)).collect(Collectors.toList())
+            : this.telefones;
+        return this;
     }
 
     public Cliente LazyLoad() {
@@ -102,19 +112,24 @@ public class Cliente implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
+        {
             return true;
         }
 
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass())
+        {
             return false;
         }
 
         Cliente other = (Cliente) obj;
 
-        if (this.id == null && other.id != null) {
+        if (this.id == null && other.id != null)
+        {
             return false;
-        } else if (!Objects.equals(this.id, other.id)) {
+        }
+        else if (!Objects.equals(this.id, other.id))
+        {
             return false;
         }
 

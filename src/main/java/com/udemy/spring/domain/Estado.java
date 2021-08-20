@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -18,28 +19,29 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(scope = Estado.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Estado implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
+
+    @NotEmpty(message = "Preenchimento obrigatório")
     public String nome;
 
     @JsonInclude(Include.NON_EMPTY)
     @OneToMany(mappedBy = "estado", fetch = FetchType.LAZY)
     public List<Cidade> cidades = new ArrayList<Cidade>();
 
-    public Estado() {
-    }
+    public Estado() {}
 
     public Estado(Integer id, String nome) {
         this.id = id;
         this.nome = nome;
     }
 
-    public Estado LazyLoad(){
+    public Estado LazyLoad() {
         this.cidades = new ArrayList<Cidade>();
         return this;
     }
@@ -54,19 +56,24 @@ public class Estado implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
+        {
             return true;
         }
 
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass())
+        {
             return false;
         }
 
         Estado other = (Estado) obj;
 
-        if (this.id == null && other.id != null) {
+        if (this.id == null && other.id != null)
+        {
             return false;
-        } else if (!Objects.equals(this.id, other.id)) {
+        }
+        else if (!Objects.equals(this.id, other.id))
+        {
             return false;
         }
 
