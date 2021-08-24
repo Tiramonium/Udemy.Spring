@@ -14,7 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-
+import javax.validation.Valid;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -35,11 +35,11 @@ public class Produto implements Serializable {
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonInclude(Include.NON_EMPTY)
     @JoinTable(name = "PRODUTO_CATEGORIA", joinColumns = @JoinColumn(name = "ID_PRODUTO"), inverseJoinColumns = @JoinColumn(name = "ID_CATEGORIA"))
-    public List<Categoria> categorias = new ArrayList<Categoria>();
+    public List<@Valid Categoria> categorias = new ArrayList<Categoria>();
 
     @JsonInclude(Include.NON_EMPTY)
-    @OneToMany(mappedBy = "id.produto", fetch = FetchType.LAZY)
-    public List<ItemPedido> itens = new ArrayList<ItemPedido>();
+    @OneToMany(mappedBy = "produto", fetch = FetchType.LAZY)
+    public List<@Valid ItemPedido> itens = new ArrayList<ItemPedido>();
 
     public Produto() {}
 
@@ -61,7 +61,7 @@ public class Produto implements Serializable {
 
         for (ItemPedido ip : this.itens)
         {
-            lista.add(ip.getPedido());
+            lista.add(ip.pedido);
         }
 
         return lista;

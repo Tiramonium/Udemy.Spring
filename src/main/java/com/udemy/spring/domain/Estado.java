@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -32,7 +33,7 @@ public class Estado implements Serializable {
 
     @JsonInclude(Include.NON_EMPTY)
     @OneToMany(mappedBy = "estado", fetch = FetchType.LAZY)
-    public List<Cidade> cidades = new ArrayList<Cidade>();
+    public List<@Valid Cidade> cidades = new ArrayList<Cidade>();
 
     public Estado() {}
 

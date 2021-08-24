@@ -13,6 +13,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -35,6 +36,7 @@ public abstract class Pagamento implements Serializable {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     public Date dataPagamento;
 
+    @Valid
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonInclude(Include.NON_NULL)
     @JoinColumn(name = "ID_PEDIDO")

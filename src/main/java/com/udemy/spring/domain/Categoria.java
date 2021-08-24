@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -36,7 +37,7 @@ public class Categoria implements Serializable {
 
     @JsonInclude(Include.NON_EMPTY)
     @ManyToMany(mappedBy = "categorias", fetch = FetchType.LAZY)
-    public List<Produto> produtos = new ArrayList<Produto>();
+    public List<@Valid Produto> produtos = new ArrayList<Produto>();
 
     public Categoria() {}
 

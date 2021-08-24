@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -24,6 +25,7 @@ public class Telefone implements Serializable {
     @NotEmpty(message = "Preenchimento obrigatório")
     public String telefone;
 
+    @Valid
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonInclude(Include.NON_NULL)
     @JoinColumn(name = "ID_CLIENTE")

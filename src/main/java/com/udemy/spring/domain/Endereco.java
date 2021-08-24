@@ -47,6 +47,7 @@ public class Endereco implements Serializable {
     @JoinColumn(name = "ID_CIDADE")
     public Cidade cidade;
 
+    @Valid
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonInclude(Include.NON_NULL)
     @JoinColumn(name = "ID_CLIENTE")
