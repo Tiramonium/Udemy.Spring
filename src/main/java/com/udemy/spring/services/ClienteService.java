@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityExistsException;
-import javax.transaction.Transactional;
 
 import com.udemy.spring.domain.Cliente;
 import com.udemy.spring.domain.Endereco;
@@ -27,6 +26,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ClienteService {
@@ -89,9 +89,14 @@ public class ClienteService {
     public Cliente Cadastrar(Cliente cliente) {
         cliente.id = null;
 
-        if (repository.findByCpfCnpj(cliente.cpfOuCnpj).isPresent())
+        if (repository.findByCpfOuCnpj(cliente.cpfOuCnpj) != null)
         {
             throw new EntityExistsException(String.format("O Cliente de CPF ou CNPJ %s já está cadastrado no sistema", cliente.cpfOuCnpj));
+        }
+
+        if (repository.findByEmail(cliente.email) != null)
+        {
+            throw new EntityExistsException(String.format("O Cliente de E-mail %s já está cadastrado no sistema", cliente.email));
         }
 
         cliente = repository.save(cliente);
