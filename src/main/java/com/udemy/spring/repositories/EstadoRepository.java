@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EstadoRepository extends JpaRepository<Estado, Integer> {
-    @Query(value = "SELECT E.* FROM ESTADO AS E WHERE E.NOME = ?1", nativeQuery = true)
+    @Query(value = "SELECT TOP 1 E.* FROM ESTADO AS E WHERE E.NOME = ?1", nativeQuery = true)
     public Optional<Estado> findByNome(@Param("nome") String nome);
 }

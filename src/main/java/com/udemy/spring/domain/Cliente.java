@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,8 +19,8 @@ import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.udemy.spring.enums.TipoCliente;
 
 import org.apache.logging.log4j.util.Strings;
@@ -46,7 +47,7 @@ public class Cliente implements Serializable {
 
     @JsonInclude(Include.NON_EMPTY)
     @NotEmpty(message = "É obrigatório informar pelo menos um Endereço")
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     public List<@Valid Endereco> enderecos = new ArrayList<Endereco>();
 
     // @ElementCollection
@@ -55,7 +56,7 @@ public class Cliente implements Serializable {
 
     @JsonInclude(Include.NON_EMPTY)
     @NotEmpty(message = "É obrigatório informar pelo menos um Telefone")
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     public List<@Valid Telefone> telefones = new ArrayList<Telefone>();
 
     @JsonInclude(Include.NON_EMPTY)
