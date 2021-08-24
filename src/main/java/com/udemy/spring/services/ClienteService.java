@@ -12,7 +12,7 @@ import com.udemy.spring.domain.Endereco;
 import com.udemy.spring.domain.Telefone;
 import com.udemy.spring.exceptions.DataIntegrityException;
 import com.udemy.spring.exceptions.ObjectNotFoundException;
-import com.udemy.spring.helpers.PaginaHelper;
+import com.udemy.spring.helpers.PageRequestHelper;
 import com.udemy.spring.repositories.CidadeRepository;
 import com.udemy.spring.repositories.ClienteRepository;
 import com.udemy.spring.repositories.EnderecoRepository;
@@ -57,7 +57,7 @@ public class ClienteService {
     }
 
     public Page<Cliente> Paginar(Integer pagina, Integer linhasPorPagina, String colunaOrdenacao, String tipoOrdenacao) {
-        PageRequest pageRequest = new PaginaHelper(pagina, linhasPorPagina, colunaOrdenacao, tipoOrdenacao).Paginar();
+        PageRequest pageRequest = new PageRequestHelper(pagina, linhasPorPagina, colunaOrdenacao, tipoOrdenacao).Paginate();
         Page<Cliente> clientes = repository.findAll(pageRequest).map(cliente -> cliente.LazyLoad());
         return clientes;
     }

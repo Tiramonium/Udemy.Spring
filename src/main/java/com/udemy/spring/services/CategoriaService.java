@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 import com.udemy.spring.domain.Categoria;
 import com.udemy.spring.exceptions.DataIntegrityException;
 import com.udemy.spring.exceptions.ObjectNotFoundException;
-import com.udemy.spring.helpers.PaginaHelper;
+import com.udemy.spring.helpers.PageRequestHelper;
 import com.udemy.spring.repositories.CategoriaRepository;
 import com.udemy.spring.repositories.ProdutoRepository;
 
@@ -39,7 +39,7 @@ public class CategoriaService {
 
     public Page<Categoria> Paginar(Integer pagina, Integer linhasPorPagina, String colunaOrdenacao,
             String tipoOrdenacao) {
-        PageRequest pageRequest = new PaginaHelper(pagina, linhasPorPagina, colunaOrdenacao, tipoOrdenacao).Paginar();
+        PageRequest pageRequest = new PageRequestHelper(pagina, linhasPorPagina, colunaOrdenacao, tipoOrdenacao).Paginate();
         Page<Categoria> categorias = repository.findAll(pageRequest).map(categoria -> categoria.LazyLoad());
         return categorias;
     }

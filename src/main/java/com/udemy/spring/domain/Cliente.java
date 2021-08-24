@@ -21,12 +21,15 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.udemy.spring.constraints.CpfCnpj;
+import com.udemy.spring.constraints.ValidarCpfCnpj;
 import com.udemy.spring.enums.TipoCliente;
 
 import org.apache.logging.log4j.util.Strings;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
+@ValidarCpfCnpj
 @JsonIdentityInfo(scope = Cliente.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Cliente implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -42,7 +45,11 @@ public class Cliente implements Serializable {
     @NotEmpty(message = "Preenchimento obrigatório")
     @Email(message = "E-mail inválido")
     public String email;
+
+    @CpfCnpj
+    @NotEmpty(message = "Preenchimento obrigatório")
     public String cpfOuCnpj;
+    
     private Integer tipo;
 
     @JsonInclude(Include.NON_EMPTY)
