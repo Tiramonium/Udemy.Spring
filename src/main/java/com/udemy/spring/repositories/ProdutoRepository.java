@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
-    @Query(value = "SELECT * FROM PRODUTO AS P INNER JOIN PRODUTO_CATEGORIA AS PC ON P.ID = PC.ID_PRODUTO WHERE PC.ID_CATEGORIA = :id", nativeQuery = true)
+    @Query(value = "SELECT P.* FROM PRODUTO AS P INNER JOIN PRODUTO_CATEGORIA AS PC ON P.ID = PC.ID_PRODUTO WHERE PC.ID_CATEGORIA = ?1",
+        nativeQuery = true)
     public List<Produto> findAllByCategoria(@Param("id") Integer id);
 }

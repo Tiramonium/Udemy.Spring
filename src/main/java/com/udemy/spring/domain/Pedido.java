@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -33,23 +34,25 @@ public class Pedido implements Serializable {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     public Date dataCadastro;
 
+    @Valid
     @ManyToOne
     @JsonInclude(Include.NON_NULL)
     @JoinColumn(name = "ID_CLIENTE")
     public Cliente cliente;
 
+    @Valid
     @ManyToOne
     @JsonInclude(Include.NON_NULL)
     @JoinColumn(name = "ID_ENDERECO")
     public Endereco enderecoEntrega;
 
     @JsonInclude(Include.NON_EMPTY)
-    @OneToMany(mappedBy = "id.pedido", fetch = FetchType.LAZY)
-    public List<ItemPedido> itens = new ArrayList<ItemPedido>();
+    @OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY)
+    public List<@Valid ItemPedido> itens = new ArrayList<ItemPedido>();
 
     @JsonInclude(Include.NON_EMPTY)
     @OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY)
-    public List<Pagamento> pagamentos = new ArrayList<Pagamento>();
+    public List<@Valid Pagamento> pagamentos = new ArrayList<Pagamento>();
 
     public Pedido() {}
 

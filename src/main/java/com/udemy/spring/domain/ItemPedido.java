@@ -3,55 +3,60 @@ package com.udemy.spring.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@JsonIdentityInfo(scope = ItemPedido.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@IdClass(ItemPedidoPK.class)
 public class ItemPedido implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    @EmbeddedId
-    @JsonInclude(Include.NON_NULL)
-    public ItemPedidoPK id = new ItemPedidoPK();
 
     public Double desconto;
     public Integer quantidade;
     public Double preco;
 
+    @Id
+    @Valid
+    @ManyToOne
+    @JsonInclude(Include.NON_NULL)
+    @JoinColumn(name = "ID_PEDIDO")
+    public Pedido pedido;
+
+    @Id
+    @Valid
+    @ManyToOne
+    @JsonInclude(Include.NON_NULL)
+    @JoinColumn(name = "ID_PRODUTO")
+    public Produto produto;
+
     public ItemPedido() {}
 
     public ItemPedido(Pedido pedido, Produto produto, Double desconto, Integer quantidade, Double preco) {
-        this.id.pedido = pedido;
-        this.id.produto = produto;
+        this.pedido = pedido;
+        this.produto = produto;
         this.desconto = desconto;
         this.quantidade = quantidade;
         this.preco = preco;
     }
 
     public ItemPedido LazyLoad() {
-        this.id = null;
+        this.pedido = null;
+        this.produto = null;
         return this;
-    }
-
-    public Pedido getPedido() {
-        return this.id.pedido;
-    }
-
-    public Produto getProduto() {
-        return this.id.produto;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (this.id == null ? 0 : this.id.hashCode());
+        result = prime * result + (this.pedido == null ? 0 : this.pedido.hashCode());
+        result = prime * result + (this.produto == null ? 0 : this.produto.hashCode());
         return result;
     }
 
@@ -69,11 +74,20 @@ public class ItemPedido implements Serializable {
 
         ItemPedido other = (ItemPedido) obj;
 
-        if (this.id == null && other.id != null)
+        if (this.pedido == null && other.pedido != null)
         {
             return false;
         }
-        else if (!Objects.equals(this.id, other.id))
+        else if (!Objects.equals(this.pedido, other.pedido))
+        {
+            return false;
+        }
+
+        if (this.produto == null && other.produto != null)
+        {
+            return false;
+        }
+        else if (!Objects.equals(this.produto, other.produto))
         {
             return false;
         }
