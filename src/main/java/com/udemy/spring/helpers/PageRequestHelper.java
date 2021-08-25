@@ -6,7 +6,7 @@ import org.springframework.data.domain.Sort.Direction;
 public class PageRequestHelper {
     private Integer Pagina = 0;
     private Integer LinhasPorPagina = 10;
-    private String ColunaOrdenacao = "Nome";
+    private String ColunaOrdenacao = "nome";
     private String TipoOrdenacao = "ASC";
 
     public PageRequestHelper() {
