@@ -12,7 +12,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = CpfCnpjValidator.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ValidarCpfCnpj {
+public @interface ValidateCpfCnpj {
     String message() default "Documento inválido como CPF e como CNPJ";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

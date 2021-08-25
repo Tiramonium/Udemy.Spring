@@ -7,11 +7,11 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import com.udemy.spring.exceptions.ValidationExceptionField;
 
-public class CpfCnpjValidator implements ConstraintValidator<ValidarCpfCnpj, Object> {
+public class CpfCnpjValidator implements ConstraintValidator<ValidateCpfCnpj, Object> {
     private String customMessage;
 
     @Override
-    public void initialize(ValidarCpfCnpj constraintAnnotation) {
+    public void initialize(ValidateCpfCnpj constraintAnnotation) {
         this.customMessage = constraintAnnotation.message();
     }
 
@@ -19,6 +19,7 @@ public class CpfCnpjValidator implements ConstraintValidator<ValidarCpfCnpj, Obj
     public boolean isValid(Object obj, ConstraintValidatorContext context) {
         Field[] propriedades = obj.getClass().getFields();
         List<ValidationExceptionField> lista = new ArrayList<ValidationExceptionField>();
+        Boolean propriedadeEncontrada = false;
 
         for (Field propriedade : propriedades)
         {
@@ -27,6 +28,7 @@ public class CpfCnpjValidator implements ConstraintValidator<ValidarCpfCnpj, Obj
                 try
                 {
                     Object valor = propriedade.get(obj);
+                    propriedadeEncontrada = true;
 
                     if (!isValidCPF(valor) && !isValidCNPJ(valor))
                     {
@@ -39,6 +41,9 @@ public class CpfCnpjValidator implements ConstraintValidator<ValidarCpfCnpj, Obj
                 {
                     ex.printStackTrace();
                 }
+            } else if (propriedade == propriedades[propriedades.length - 1] && !propriedadeEncontrada) {
+                context.buildConstraintViolationWithTemplate("Nenhuma propriedade foi marcada com a anotação @CpfCnpj").addConstraintViolation();
+                return false;
             }
         }
 

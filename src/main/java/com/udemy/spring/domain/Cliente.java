@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,14 +23,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.udemy.spring.constraints.CpfCnpj;
-import com.udemy.spring.constraints.ValidarCpfCnpj;
+import com.udemy.spring.constraints.ValidateCpfCnpj;
 import com.udemy.spring.enums.TipoCliente;
 
 import org.apache.logging.log4j.util.Strings;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
-@ValidarCpfCnpj
+@ValidateCpfCnpj
 @JsonIdentityInfo(scope = Cliente.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Cliente implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -42,14 +43,16 @@ public class Cliente implements Serializable {
     @Length(min = 5, max = 120, message = "O tamanho do Cliente deve ser entre {min} e {max} caracteres")
     public String nome;
 
-    @NotEmpty(message = "Preenchimento obrigatório")
+    @Column(unique = true)
     @Email(message = "E-mail inválido")
+    @NotEmpty(message = "Preenchimento obrigatório")
     public String email;
 
     @CpfCnpj
+    @Column(unique = true)
     @NotEmpty(message = "Preenchimento obrigatório")
     public String cpfOuCnpj;
-    
+
     private Integer tipo;
 
     @JsonInclude(Include.NON_EMPTY)
@@ -82,6 +85,7 @@ public class Cliente implements Serializable {
 
     public Cliente Atualizar(Cliente cliente) {
         this.id = cliente.id != null ? cliente.id : this.id;
+        this.cpfOuCnpj = cliente.cpfOuCnpj != null ? cliente.cpfOuCnpj : this.cpfOuCnpj;
         this.nome = !Strings.isBlank(cliente.nome) ? cliente.nome : this.nome;
         this.email = !Strings.isBlank(cliente.email) ? cliente.email : this.email;
         this.tipo = this.tipo == null && cliente.tipo != null ? cliente.tipo : this.tipo;

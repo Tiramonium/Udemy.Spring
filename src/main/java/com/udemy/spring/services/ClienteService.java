@@ -122,6 +122,19 @@ public class ClienteService {
     public Cliente Atualizar(Integer id, Cliente novoCliente) {
         novoCliente.id = id;
         Cliente cliente = Buscar(id).Atualizar(novoCliente);
+        Cliente clienteDuplicado = repository.findByCpfOuCnpj(cliente.cpfOuCnpj);
+
+        if (clienteDuplicado != null && !clienteDuplicado.equals(cliente))
+        {
+            throw new EntityExistsException(String.format("O Cliente de CPF ou CNPJ %s já está cadastrado no sistema", cliente.cpfOuCnpj));
+        }
+
+        clienteDuplicado = repository.findByEmail(cliente.email);
+
+        if (clienteDuplicado != null && !clienteDuplicado.equals(cliente))
+        {
+            throw new EntityExistsException(String.format("O Cliente de E-mail %s já está cadastrado no sistema", cliente.email));
+        }
 
         for (Endereco endereco : cliente.enderecos)
         {
