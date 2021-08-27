@@ -15,7 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
-
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -34,16 +35,16 @@ public class Pedido implements Serializable {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     public Date dataCadastro;
 
-    @Valid
     @ManyToOne
     @JsonInclude(Include.NON_NULL)
     @JoinColumn(name = "ID_CLIENTE")
+    @NotNull(message = "O Cliente deve ser informado")
     public Cliente cliente;
 
-    @Valid
     @ManyToOne
     @JsonInclude(Include.NON_NULL)
     @JoinColumn(name = "ID_ENDERECO")
+    @NotNull(message = "O Endereço de Entrega deve ser informado")
     public Endereco enderecoEntrega;
 
     @JsonInclude(Include.NON_EMPTY)
@@ -52,6 +53,7 @@ public class Pedido implements Serializable {
 
     @JsonInclude(Include.NON_EMPTY)
     @OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY)
+    @NotEmpty(message = "Pelo menos um Pagamento deve ser informado")
     public List<@Valid Pagamento> pagamentos = new ArrayList<Pagamento>();
 
     public Pedido() {}

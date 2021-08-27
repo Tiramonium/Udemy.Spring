@@ -5,9 +5,14 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.udemy.spring.enums.EstadoPagamento;
 
 @Entity
+@JsonTypeName("pagamentoBoleto")
+@JsonIdentityInfo(scope = PagamentoBoleto.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class PagamentoBoleto extends Pagamento {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     public Date dataVencimento;

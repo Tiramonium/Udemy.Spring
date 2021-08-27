@@ -147,8 +147,7 @@ public class Application implements CommandLineRunner {
         Pagamento pagto1 = new PagamentoCartao(null, EstadoPagamento.QUITADO, ped1, sdf.parse("30/09/2017 10:33"), 6);
         ped1.pagamentos.add(pagto1);
 
-        Pagamento pagto2 = new PagamentoBoleto(null, EstadoPagamento.PENDENTE, ped2, null,
-                sdf.parse("20/10/2017 00:00"));
+        Pagamento pagto2 = new PagamentoBoleto(null, EstadoPagamento.PENDENTE, ped2, null, sdf.parse("20/10/2017 00:00"));
         ped2.pagamentos.add(pagto2);
 
         cli1.pedidos.addAll(Arrays.asList(ped1, ped2));

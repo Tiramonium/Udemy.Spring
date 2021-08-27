@@ -30,7 +30,11 @@ public class CpfCnpjValidator implements ConstraintValidator<ValidateCpfCnpj, Ob
                     Object valor = propriedade.get(obj);
                     propriedadeEncontrada = true;
 
-                    if (!isValidCPF(valor) && !isValidCNPJ(valor))
+                    if (valor == null)
+                    {
+                        return true;
+                    }
+                    else if (!isValidCPF(valor) && !isValidCNPJ(valor))
                     {
                         String message = context.getDefaultConstraintMessageTemplate();
                         message = !this.customMessage.equals(message) ? this.customMessage : message;
@@ -41,7 +45,9 @@ public class CpfCnpjValidator implements ConstraintValidator<ValidateCpfCnpj, Ob
                 {
                     ex.printStackTrace();
                 }
-            } else if (propriedade == propriedades[propriedades.length - 1] && !propriedadeEncontrada) {
+            }
+            else if (propriedade == propriedades[propriedades.length - 1] && !propriedadeEncontrada)
+            {
                 context.buildConstraintViolationWithTemplate("Nenhuma propriedade foi marcada com a anotação @CpfCnpj").addConstraintViolation();
                 return false;
             }
