@@ -94,4 +94,8 @@ public class ItemPedido implements Serializable {
 
         return true;
     }
+
+    public Double getSubtotal() {
+        return (this.preco - this.desconto) * this.quantidade;
+    }
 }
