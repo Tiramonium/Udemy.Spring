@@ -35,7 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class LocalService {
+public class DBService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 

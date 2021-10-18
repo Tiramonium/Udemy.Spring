@@ -4,18 +4,18 @@ import java.text.ParseException;
 import com.udemy.spring.services.DBService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConditionalOnProperty(value = "spring.datasource.name", havingValue = "localdb", matchIfMissing = false)
-public class LocalComponent implements CommandLineRunner {
+@ConditionalOnExpression("'${spring.datasource.name}'.equals('devdb') and '${spring.jpa.hibernate.ddl-auto}'.equals('create')")
+public class DevComponent implements CommandLineRunner {
     @Autowired
     private DBService dbService;
 
     @Bean
-    public boolean IniciarBancoLocal() {
+    public boolean IniciarBancoDesenvolvimento() {
         try
         {
             dbService.IniciarBanco();
@@ -28,7 +28,7 @@ public class LocalComponent implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) {
-        this.IniciarBancoLocal();
+    public void run(String... args) throws Exception {
+        this.IniciarBancoDesenvolvimento();
     }
 }
