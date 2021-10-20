@@ -35,6 +35,9 @@ public class PedidoService {
     private ClienteRepository clienteRepository;
 
     @Autowired
+    private EmailService emailService;
+
+    @Autowired
     private EnderecoRepository enderecoRepository;
 
     @Autowired
@@ -148,7 +151,7 @@ public class PedidoService {
         pedido.enderecoEntrega.cidade.estado.LazyLoad();
 
         pedido.itens.stream().map((item) -> item.produto = produtoRepository.findById(item.produto.id).get().LazyLoad()).collect(Collectors.toList());
-        System.out.println(pedido);
+        emailService.sendOrderConfirmationEmail(pedido);
         return pedido;
     }
 }

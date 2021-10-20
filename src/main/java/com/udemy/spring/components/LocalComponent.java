@@ -2,6 +2,8 @@ package com.udemy.spring.components;
 
 import java.text.ParseException;
 import com.udemy.spring.services.DBService;
+import com.udemy.spring.services.EmailService;
+import com.udemy.spring.services.MockEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -25,6 +27,11 @@ public class LocalComponent implements CommandLineRunner {
         {
             return false;
         }
+    }
+
+    @Bean
+    public EmailService emailService() {
+        return new MockEmailService();
     }
 
     @Override
