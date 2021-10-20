@@ -1,6 +1,8 @@
 package com.udemy.spring.domain;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -94,6 +96,21 @@ public class ItemPedido implements Serializable {
         }
 
         return true;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        builder.append(this.produto.nome);
+        builder.append(", Quantidade: ");
+        builder.append(this.quantidade);
+        builder.append(", Preço unitário: ");
+        builder.append(nf.format(this.preco));
+        builder.append(", Subtotal: ");
+        builder.append(nf.format(this.getSubtotal()));
+        builder.append("\n");
+        return builder.toString();
     }
 
     public Double getSubtotal() {

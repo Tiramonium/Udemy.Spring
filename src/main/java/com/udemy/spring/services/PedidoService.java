@@ -148,6 +148,7 @@ public class PedidoService {
         pedido.enderecoEntrega.cidade.estado.LazyLoad();
 
         pedido.itens.stream().map((item) -> item.produto = produtoRepository.findById(item.produto.id).get().LazyLoad()).collect(Collectors.toList());
+        System.out.println(pedido);
         return pedido;
     }
 }
