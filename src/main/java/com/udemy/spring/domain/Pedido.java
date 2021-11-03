@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.udemy.spring.enums.EstadoPagamento;
+import org.hibernate.annotations.Formula;
 
 @Entity
 @JsonIdentityInfo(scope = Pedido.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -38,6 +39,9 @@ public class Pedido implements Serializable {
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     public Date dataCadastro;
+
+    @Formula(value = "(SELECT SUM(COALESCE(IP.sub_total, 0)) FROM Pedido P INNER JOIN Item_Pedido IP WHERE P.id = id)")
+    private Double valorTotal;
 
     @ManyToOne
     @JsonInclude(Include.NON_NULL)
@@ -118,7 +122,7 @@ public class Pedido implements Serializable {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         builder.append("Pedido número: ");
         builder.append(this.id);
-        builder.append(", Instante: ");
+        builder.append(", Data do Pedido: ");
         builder.append(sdf.format(this.dataCadastro));
         builder.append(", Cliente: ");
         builder.append(this.cliente.nome);
@@ -132,16 +136,16 @@ public class Pedido implements Serializable {
         }
 
         builder.append("Valor total: ");
-        builder.append(nf.format(this.getValorTotalItens()));
+        builder.append(nf.format(this.getValorTotal()));
         return builder.toString();
     }
 
-    public Double getValorTotalItens() {
+    public Double getValorTotal() {
         Double total = 0d;
 
         for (ItemPedido ip : this.itens)
         {
-            total += ip.getSubtotal();
+            total += ip.getSubTotal();
         }
 
         return total;

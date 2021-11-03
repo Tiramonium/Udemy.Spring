@@ -14,6 +14,7 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import org.hibernate.annotations.Formula;
 
 @Entity
 @IdClass(ItemPedidoPK.class)
@@ -23,6 +24,9 @@ public class ItemPedido implements Serializable {
     public Double desconto;
     public Integer quantidade;
     public Double preco;
+
+    @Formula(value = "(SELECT (COALESCE(IP.preco, 0) - COALESCE(IP.desconto, 0)) * COALESCE(IP.quantidade, 0) FROM Item_Pedido IP WHERE IP.id_produto = id_produto AND IP.id_pedido = id_pedido)")
+    private Double subTotal;
 
     @Id
     @Valid
@@ -108,12 +112,12 @@ public class ItemPedido implements Serializable {
         builder.append(", Preço unitário: ");
         builder.append(nf.format(this.preco));
         builder.append(", Subtotal: ");
-        builder.append(nf.format(this.getSubtotal()));
+        builder.append(nf.format(this.getSubTotal()));
         builder.append("\n");
         return builder.toString();
     }
 
-    public Double getSubtotal() {
+    public Double getSubTotal() {
         return (this.preco - this.desconto) * this.quantidade;
     }
 }
